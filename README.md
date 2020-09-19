@@ -48,6 +48,7 @@ python game.py
 
 
 ## Acknowledgements
+* [PyGame](https://www.pygame.org/news)
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)
 * [Google Fonts](https://fonts.google.com/)
