@@ -16,6 +16,12 @@
 
 Snake Game crated using Pygame Library
 
+In this game there are tow characters: the snake (the player) and its food. Whenever the snake eats food, its lenght should be increased.
+- whenever the snake eats the food, we have to generate new food in a new position.
+- whenever the snake eats the food, we have to incrrease the speed of the snake to make the game more difficult. We should also track collisions beteen the snake's head and its body.
+
+
+
 ![ScreenShot][product-screenshot]
 
 
