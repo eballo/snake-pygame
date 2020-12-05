@@ -6,7 +6,8 @@ from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, UP, DOWN, LEFT, RIGHT, G
 
 
 class Snake(object):
-    def __init__(self):
+    def __init__(self, game):
+        self.game = game
         self.length = 1
         self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
@@ -53,11 +54,13 @@ class Snake(object):
             pygame.draw.rect(surface, (93, 216, 228), r, 1)
 
     def handle_keys(self):
-        running = True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                self.game.running = False
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.game.playing = False
+                    self.game.running = False
                 if event.key == pygame.K_UP:
                     self.turn(UP)
                 elif event.key == pygame.K_DOWN:
@@ -66,4 +69,3 @@ class Snake(object):
                     self.turn(LEFT)
                 elif event.key == pygame.K_RIGHT:
                     self.turn(RIGHT)
-        return running
