@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from snake.constants import SCREEN_WIDTH, SCREEN_HEIGHT, UP, DOWN, LEFT, RIGHT, GRID_SIZE
+from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, UP, DOWN, LEFT, RIGHT, GRID_SIZE
 
 
 class Snake(object):

@@ -1,14 +1,11 @@
 import pygame
 import sys
-from snake.constants import GRID_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, GRID_WIDTH, GRID_HEIGHT
+from snake.settings import GRID_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, GRID_WIDTH, GRID_HEIGHT
 from snake.food import Food
 from snake.snake import Snake
 
 
 class Game(object):
-
-    RUNNING = True
-    bg_color = pygame.Color('grey12')
 
     def __init__(self):
         pygame.init()
@@ -18,6 +15,8 @@ class Game(object):
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
         self.surface = pygame.Surface(self.screen.get_size())
         self.surface = self.surface.convert()
+        self.running = True
+        self.playing = True
 
     @staticmethod
     def draw_grid(surface):
@@ -27,7 +26,7 @@ class Game(object):
                 if (x + y) % 2 == 0:
                     color = (93, 216, 228)
                 else:
-                    color =(84, 194, 205)
+                    color = (84, 194, 205)
                 pygame.draw.rect(surface, color, r)
 
     @staticmethod
@@ -46,9 +45,9 @@ class Game(object):
         snake = Snake()
         food = Food()
 
-        while self.RUNNING:
+        while self.running:
             # Animations
-            self.RUNNING = snake.handle_keys()
+            self.running = snake.handle_keys()
             snake.move()
             self.check_collision(snake, food)
 
