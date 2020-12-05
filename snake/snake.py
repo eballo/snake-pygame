@@ -2,8 +2,9 @@ import random
 
 import pygame
 
+from snake.client import Client
 from snake.settings import UP, DOWN, LEFT, RIGHT, GRID_SIZE, BOARD_WIDTH, BOARD_HEIGHT, SNAKE_COLOR, \
-    BACKGROUND_COLOR_ONE, MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH
+    BACKGROUND_COLOR_ONE, MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT
 
 
 class Snake(object):
@@ -14,6 +15,7 @@ class Snake(object):
         self.positions = [((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         self.color = SNAKE_COLOR
+        self.client = Client()
 
     def debug_info(self):
         print("----")
@@ -75,3 +77,7 @@ class Snake(object):
                     self.turn(LEFT)
                 elif event.key == pygame.K_RIGHT:
                     self.turn(RIGHT)
+
+    def send(self):
+        positions = ', '.join(map(str, self.positions))
+        self.client.send(positions)

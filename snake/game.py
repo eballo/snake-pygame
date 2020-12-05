@@ -3,7 +3,7 @@ import sys
 
 from snake.intro import Intro
 from snake.settings import GRID_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH, MENU_HEIGHT, GRID_HEIGHT, \
-    GRID_WIDTH, BACKGROUND_COLOR_ONE, BACKGROUND_COLOR_TWO, BACKGROUND_COLOR_MENU
+    GRID_WIDTH, BACKGROUND_COLOR_ONE, BACKGROUND_COLOR_TWO, BACKGROUND_COLOR_MENU, DISCONNECT_MESSAGE
 from snake.food import Food
 from snake.snake import Snake
 
@@ -13,6 +13,8 @@ class Game(object):
     def __init__(self):
         pygame.init()
         pygame.font.init()
+        self.snake = Snake(self)
+        self.food = Food()
         self.font = pygame.font.Font("./snake/assets/fonts/RobotoMono-VariableFont_wght.ttf", 16)
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
@@ -56,22 +58,21 @@ class Game(object):
 
     def gameLoop(self):
         self.draw_grid(self.surface)
-        snake = Snake(self)
-        food = Food()
 
         while self.running:
             # Animations
-            snake.handle_keys()
-            snake.move()
-            self.check_collision(snake, food)
+            self.snake.handle_keys()
+            self.snake.move()
+            self.snake.send()
+            self.check_collision(self.snake, self.food)
 
             # Visuals
             self.draw_grid(self.surface)
-            snake.draw(self.surface)
-            food.draw(self.surface)
+            self.snake.draw(self.surface)
+            self.food.draw(self.surface)
 
             self.screen.blit(self.surface, (0, 0))
-            self.display_score(snake, self.screen)
+            self.display_score(self.snake, self.screen)
             pygame.display.flip()
             self.clock.tick(10)
             # snake.debug_info()
@@ -90,7 +91,7 @@ class Game(object):
 
         self.quit()
 
-    @staticmethod
-    def quit():
+    def quit(self):
+        self.snake.send(DISCONNECT_MESSAGE)
         pygame.quit()
         sys.exit()
