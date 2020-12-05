@@ -2,7 +2,8 @@ import pygame
 import sys
 
 from snake.intro import Intro
-from snake.settings import GRID_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, GRID_WIDTH, GRID_HEIGHT
+from snake.settings import GRID_SIZE, SCREEN_WIDTH, SCREEN_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH, MENU_HEIGHT, GRID_HEIGHT, \
+    GRID_WIDTH, BACKGROUND_COLOR_ONE, BACKGROUND_COLOR_TWO, BACKGROUND_COLOR_MENU
 from snake.food import Food
 from snake.snake import Snake
 
@@ -20,15 +21,26 @@ class Game(object):
         self.running = True
         self.playing = True
 
+    def debug(self):
+        print(f"MENU_HEIGHT  : {MENU_HEIGHT}")
+        print(f"BOARD_HEIGHT : {BOARD_HEIGHT}")
+        print(f"BOARD_WIDTH  : {BOARD_WIDTH}")
+        print(f"SCREEN_HEIGHT: {SCREEN_HEIGHT}")
+        print(f"SCREEN_WIDTH : {SCREEN_WIDTH}")
+        print(f"GRID_HEIGHT  : {GRID_HEIGHT}")
+        print(f"GRID_WIDTH   : {GRID_WIDTH}")
+
     @staticmethod
     def draw_grid(surface):
-        for y in range(0, int(GRID_HEIGHT)):
-            for x in range(0, int(GRID_WIDTH)):
+        for y in range(0, int(BOARD_HEIGHT), 1):
+            for x in range(0, int(BOARD_WIDTH)):
                 r = pygame.Rect((x * GRID_SIZE, y * GRID_SIZE), (GRID_SIZE, GRID_SIZE))
                 if (x + y) % 2 == 0:
-                    color = (93, 216, 228)
+                    color = BACKGROUND_COLOR_ONE
                 else:
-                    color = (84, 194, 205)
+                    color = BACKGROUND_COLOR_TWO
+                if y < MENU_HEIGHT:
+                    color = BACKGROUND_COLOR_MENU
                 pygame.draw.rect(surface, color, r)
 
     @staticmethod

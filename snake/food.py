@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from snake.settings import GRID_WIDTH, GRID_SIZE, GRID_HEIGHT
+from snake.settings import GRID_WIDTH, GRID_SIZE, GRID_HEIGHT, MENU_HEIGHT
 
 
 class Food(object):
@@ -12,8 +12,9 @@ class Food(object):
         self.randomize_position()
 
     def randomize_position(self):
-        self.position = (random.randint(0, int(GRID_WIDTH) - 1) * GRID_SIZE,
-                         random.randint(0, int(GRID_HEIGHT) - 1) * GRID_SIZE)
+        x = random.randint(0, int(GRID_WIDTH) - 1) * GRID_SIZE
+        y = random.randint(MENU_HEIGHT, int(GRID_HEIGHT) - 1) * GRID_SIZE
+        self.position = (x, y)
 
     def draw(self, surface):
         # r = pygame.Rect((self.position[0], self.position[1]), (GRID_SIZE, GRID_SIZE))

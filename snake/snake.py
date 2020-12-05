@@ -2,17 +2,18 @@ import random
 
 import pygame
 
-from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, UP, DOWN, LEFT, RIGHT, GRID_SIZE
+from snake.settings import UP, DOWN, LEFT, RIGHT, GRID_SIZE, BOARD_WIDTH, BOARD_HEIGHT, SNAKE_COLOR, \
+    BACKGROUND_COLOR_ONE, MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH
 
 
 class Snake(object):
     def __init__(self, game):
         self.game = game
-        self.length = 1
-        self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
-        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-        self.color = (17, 24, 47)
+        self.length = 3
         self.score = 0
+        self.positions = [((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
+        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
+        self.color = SNAKE_COLOR
 
     def debug_info(self):
         print("----")
@@ -32,8 +33,13 @@ class Snake(object):
     def move(self):
         current_pos = self.get_head_position()
         x, y = self.direction
-        new_pos = (((current_pos[0] + (x * GRID_SIZE)) % SCREEN_WIDTH),
-                   ((current_pos[1] + (y * GRID_SIZE)) % SCREEN_HEIGHT))
+        new_x = ((current_pos[0] + (x * GRID_SIZE)) % BOARD_WIDTH)
+        new_y = (current_pos[1] + (y * GRID_SIZE))
+        if new_y >= SCREEN_HEIGHT:
+            new_y = MENU_HEIGHT * GRID_HEIGHT
+        if new_y < (MENU_HEIGHT -1) * GRID_HEIGHT:
+            new_y = SCREEN_HEIGHT
+        new_pos = (new_x, new_y)
         if len(self.positions) > 2 and new_pos in self.positions[2:]:
             self.reset()
         else:
@@ -42,16 +48,16 @@ class Snake(object):
                 self.positions.pop()
 
     def reset(self):
-        self.length = 1
+        self.length = 3
         self.score = 0
-        self.positions = [((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2))]
+        self.positions = [((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
 
     def draw(self, surface):
         for pos in self.positions:
             r = pygame.Rect((pos[0], pos[1]), (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(surface, self.color, r)
-            pygame.draw.rect(surface, (93, 216, 228), r, 1)
+            pygame.draw.rect(surface, BACKGROUND_COLOR_ONE, r, 1)
 
     def handle_keys(self):
         for event in pygame.event.get():
