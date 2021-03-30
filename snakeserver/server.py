@@ -1,10 +1,10 @@
 import socket
 import threading
 
-from snake.settings import PORT, ADDRESS, HEADER, FORMAT, DISCONNECT_MESSAGE, SERVER
+from server.settings import PORT, ADDRESS, HEADER, FORMAT, DISCONNECT_MESSAGE, SERVER
 
 
-class Server():
+class SnakeServer:
     SERVER = socket.gethostbyname("localhost")
     ADDRESS = (SERVER, PORT)
 
@@ -38,5 +38,5 @@ class Server():
 
 if __name__ == '__main__':
     print("[STARTING] server is starting ...")
-    server = Server()
+    server = SnakeServer()
     server.start()
