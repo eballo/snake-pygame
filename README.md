@@ -58,6 +58,8 @@ python game.py
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)
 * [Google Fonts](https://fonts.google.com/)
+* [Youtbe Tutorial multiplayer](https://www.youtube.com/watch?v=McoDjOCb2Zo)
+* [udppong](https://github.com/marvin939/udpong)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
