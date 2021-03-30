@@ -3,23 +3,28 @@ import random
 import pygame
 
 from snake.settings import UP, DOWN, LEFT, RIGHT, GRID_SIZE, BOARD_WIDTH, BOARD_HEIGHT, SNAKE_COLOR, \
-    BACKGROUND_COLOR_ONE, MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT, SCREEN_WIDTH
+    MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT
 
 
-class Snake(object):
+class Segment(pygame.sprite.Sprite):
+
+    def __init__(self, x, y, color=SNAKE_COLOR):
+        super().__init__()
+        self.image = pygame.Surface((GRID_SIZE, GRID_SIZE))
+        self.image.fill(color)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+
+class Snake:
+
     def __init__(self, game):
         self.game = game
         self.length = 3
         self.score = 0
-        self.positions = [((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
+        self.positions = [Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-        self.color = SNAKE_COLOR
-
-    def debug_info(self):
-        print("----")
-        print(f"position: {self.positions}")
-        print(f"direction: {self.direction}")
-        print(f"length: {self.length}")
 
     def get_head_position(self):
         return self.positions[0]
@@ -33,31 +38,30 @@ class Snake(object):
     def move(self):
         current_pos = self.get_head_position()
         x, y = self.direction
-        new_x = ((current_pos[0] + (x * GRID_SIZE)) % BOARD_WIDTH)
-        new_y = (current_pos[1] + (y * GRID_SIZE))
+        new_x = ((current_pos.rect.x + (x * GRID_SIZE)) % BOARD_WIDTH)
+        new_y = (current_pos.rect.y + (y * GRID_SIZE))
         if new_y >= SCREEN_HEIGHT:
             new_y = MENU_HEIGHT * GRID_HEIGHT
-        if new_y < (MENU_HEIGHT -1) * GRID_HEIGHT:
+        if new_y < (MENU_HEIGHT - 1) * GRID_HEIGHT:
             new_y = SCREEN_HEIGHT
-        new_pos = (new_x, new_y)
-        if len(self.positions) > 2 and new_pos in self.positions[2:]:
+        new_segment = Segment(new_x, new_y)
+        if len(self.positions) > 2 and new_segment in self.positions[2:]:
             self.reset()
         else:
-            self.positions.insert(0, new_pos)
+            self.positions.insert(0, new_segment)
+            self.game.all_sprites.add(new_segment)
             if len(self.positions) > self.length:
-                self.positions.pop()
+                old_segment = self.positions.pop()
+                self.game.all_sprites.remove(old_segment)
 
     def reset(self):
         self.length = 3
         self.score = 0
-        self.positions = [((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
+        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))
+        self.positions = [segment]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-
-    def draw(self, surface):
-        for pos in self.positions:
-            r = pygame.Rect((pos[0], pos[1]), (GRID_SIZE, GRID_SIZE))
-            pygame.draw.rect(surface, self.color, r)
-            pygame.draw.rect(surface, BACKGROUND_COLOR_ONE, r, 1)
+        self.game.all_sprites.empty()
+        self.game.all_sprites.add(segment)
 
     def handle_keys(self):
         for event in pygame.event.get():
@@ -75,3 +79,9 @@ class Snake(object):
                     self.turn(LEFT)
                 elif event.key == pygame.K_RIGHT:
                     self.turn(RIGHT)
+
+    def debug_info(self):
+        print("----")
+        print(f"position: {self.positions}")
+        print(f"direction: {self.direction}")
+        print(f"length: {self.length}")
