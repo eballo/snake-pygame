@@ -19,8 +19,8 @@ class Segment(pygame.sprite.Sprite):
 
 class Snake:
 
-    def __init__(self, game):
-        self.game = game
+    def __init__(self, game_manager):
+        self.game_manager = game_manager
         self.length = 3
         self.score = 0
         self.positions = [Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
@@ -28,12 +28,6 @@ class Snake:
 
     def get_head_position(self):
         return self.positions[0]
-
-    def turn(self, point):
-        if self.length > 1 and (point[0] * -1, point[1] - 1) == self.direction:
-            return
-        else:
-            self.direction = point
 
     def move(self):
         current_pos = self.get_head_position()
@@ -45,32 +39,33 @@ class Snake:
         if new_y < (MENU_HEIGHT - 1) * GRID_HEIGHT:
             new_y = SCREEN_HEIGHT
         new_segment = Segment(new_x, new_y)
-        if len(self.positions) > 2 and new_segment in self.positions[2:]:
-            self.reset()
+        sub_group = pygame.sprite.Group()
+        for seg in self.positions[2:]:
+            sub_group.add(seg)
+        hit = pygame.sprite.spritecollide(new_segment, sub_group, False)
+        if len(self.positions) > 2 and len(hit) > 0:
+            self.game_manager.reset()
         else:
             self.positions.insert(0, new_segment)
-            self.game.all_sprites.add(new_segment)
+            self.game_manager.snake_sprites.add(new_segment)
             if len(self.positions) > self.length:
                 old_segment = self.positions.pop()
-                self.game.all_sprites.remove(old_segment)
+                self.game_manager.snake_sprites.remove(old_segment)
 
-    def reset(self):
-        self.length = 3
-        self.score = 0
-        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))
-        self.positions = [segment]
-        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
-        self.game.all_sprites.empty()
-        self.game.all_sprites.add(segment)
+    def turn(self, point):
+        if self.length > 1 and (point[0] * -1, point[1] - 1) == self.direction:
+            return
+        else:
+            self.direction = point
 
     def handle_keys(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.game.running = False
+                self.game_manager.running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.game.playing = False
-                    self.game.running = False
+                    self.game_manager.playing = False
+                    self.game_manager.running = False
                 if event.key == pygame.K_UP:
                     self.turn(UP)
                 elif event.key == pygame.K_DOWN:
@@ -79,6 +74,14 @@ class Snake:
                     self.turn(LEFT)
                 elif event.key == pygame.K_RIGHT:
                     self.turn(RIGHT)
+
+    def reset(self):
+        self.length = 3
+        self.score = 0
+        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))
+        self.positions = [segment]
+        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
+        self.game_manager.snake_sprites.add(segment)
 
     def debug_info(self):
         print("----")

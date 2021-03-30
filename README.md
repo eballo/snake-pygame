@@ -52,6 +52,9 @@ python game.py
 * 1.0
     * Pygame working version
 
+* 1.1
+    * Add Score
+
 
 ## Acknowledgements
 * [PyGame](https://www.pygame.org/news)

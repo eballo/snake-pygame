@@ -7,8 +7,9 @@ from snake.settings import GRID_WIDTH, GRID_SIZE, GRID_HEIGHT, MENU_HEIGHT, FOOD
 
 class Food(pygame.sprite.Sprite):
 
-    def __init__(self):
+    def __init__(self, game_manager):
         super().__init__()
+        self.game_manager = game_manager
         self.image = pygame.Surface((GRID_SIZE, GRID_SIZE))
         self.image.fill(FOOD_COLOR)
         self.rect = self.image.get_rect()
