@@ -19,12 +19,12 @@ class Segment(pygame.sprite.Sprite):
 
 class Snake:
 
-    def __init__(self, game_manager):
+    def __init__(self, game_manager, color=SNAKE_COLOR):
         self.game_manager = game_manager
         self.length = 3
         self.score = 0
         self.lives = 1
-        self.positions = [Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
+        self.positions = [Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2), color)]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
 
     def get_head_position(self):
@@ -101,3 +101,6 @@ class Snake:
         print(f"position: {self.positions}")
         print(f"direction: {self.direction}")
         print(f"length: {self.length}")
+        print(f"score: {self.score}")
+        print(f"lives: {self.lives}")
+        print(f"color: {self.color}")

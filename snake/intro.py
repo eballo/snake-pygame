@@ -27,7 +27,8 @@ class Intro(Text):
             self.game_manager.clock.tick(FPS)
             self.game_manager.screen.fill(BLACK)
             self.draw_text("Snake Game", 50, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3, self.game_manager.screen)
-            self.draw_text("Press SPACE key to play", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_WIDTH / 3 + 100, self.game_manager.screen)
+            self.draw_text("Press SPACE key to play", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_WIDTH / 3 + 100,
+                           self.game_manager.screen)
             pygame.display.flip()
             self.check_events()
         pygame.mixer.music.stop()
@@ -51,4 +52,3 @@ class Intro(Text):
                     self.game_manager.game_running = True
                     self.game_manager.game_over = False
                     self.game_manager.reset()
-

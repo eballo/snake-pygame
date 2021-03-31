@@ -1,5 +1,6 @@
-import pygame
 import sys
+
+import pygame
 
 from snake.game_manager import GameManager
 from snake.game_over import GameOver
