@@ -56,7 +56,7 @@ class Snake:
                 self.game_manager.snake_sprites.remove(old_segment)
 
     def turn(self, point):
-        if self.length > 1 and (point[0] * -1, point[1] - 1) == self.direction:
+        if self.length > 1 and (point[0] * -1, point[1] * - 1) == self.direction:
             return
         else:
             self.direction = point

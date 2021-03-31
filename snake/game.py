@@ -12,6 +12,7 @@ class Game(object):
     def __init__(self):
         pygame.init()
         pygame.font.init()
+        pygame.display.set_caption("Snake!")
         self.game_manager = GameManager()
 
     def game_loop(self):
