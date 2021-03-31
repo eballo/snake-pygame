@@ -11,23 +11,21 @@ class Game(object):
 
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()
         pygame.font.init()
         pygame.display.set_caption("Snake!")
         self.game_manager = GameManager()
 
     def game_loop(self):
+        pygame.mixer.music.load('./snake/assets/music/creationOfValues.mp3')
+        pygame.mixer.music.play(-1)
         while self.game_manager.game_running:
             # keep the game loop running at the right speed
             self.game_manager.clock.tick(FPS)
 
             # Process Input (events) - Animations
             self.game_manager.process_input()
-
-            if self.game_manager.snake.lives == 0:
-                self.game_manager.game_running = False
-                self.game_manager.run_display = True
-                self.game_manager.game_over = True
-                break
+            self.game_manager.validate()
 
             # Update - Visuals
             self.game_manager.snake_sprites.update()
@@ -40,6 +38,7 @@ class Game(object):
             self.game_manager.display_score()
             self.game_manager.display_lives()
             pygame.display.flip()
+        pygame.mixer.music.stop()
 
     def start(self):
         intro = Intro(self.game_manager)

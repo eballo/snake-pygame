@@ -44,7 +44,9 @@ class GameManager:
         self.snake.move()
         hits = pygame.sprite.groupcollide(self.food_sprites, self.snake_sprites, False, False)
         if len(hits) > 0:
-            self.eat_food(self.snake, self.food)
+            for hit in hits:
+                self.eat_food(self.snake, self.food)
+                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./snake/assets/music/item.wav'), maxtime=600)
 
     @staticmethod
     def eat_food(snake, food):
@@ -61,15 +63,21 @@ class GameManager:
         self.screen.blit(text, (200, 10))
 
     def debug(self):
-        # print(f"MENU_HEIGHT  : {MENU_HEIGHT}")
-        # print(f"BOARD_HEIGHT : {BOARD_HEIGHT}")
-        # print(f"BOARD_WIDTH  : {BOARD_WIDTH}")
-        # print(f"SCREEN_HEIGHT: {SCREEN_HEIGHT}")
-        # print(f"SCREEN_WIDTH : {SCREEN_WIDTH}")
-        # print(f"GRID_HEIGHT  : {GRID_HEIGHT}")
-        # print(f"GRID_WIDTH   : {GRID_WIDTH}")
+        print(f"MENU_HEIGHT  : {MENU_HEIGHT}")
+        print(f"BOARD_HEIGHT : {BOARD_HEIGHT}")
+        print(f"BOARD_WIDTH  : {BOARD_WIDTH}")
+        print(f"SCREEN_HEIGHT: {SCREEN_HEIGHT}")
+        print(f"SCREEN_WIDTH : {SCREEN_WIDTH}")
+        print(f"GRID_HEIGHT  : {GRID_HEIGHT}")
+        print(f"GRID_WIDTH   : {GRID_WIDTH}")
         print("----")
         print(f"run_display : {self.run_display}")
         print(f"game_running : {self.game_running}")
         print(f"running : {self.running}")
         print(f"game_running : {self.game_running}")
+
+    def validate(self):
+        if self.snake.lives == 0:
+            self.game_running = False
+            self.run_display = True
+            self.game_over = True

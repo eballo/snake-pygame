@@ -46,6 +46,7 @@ class Snake:
             sub_group.add(seg)
         hit = pygame.sprite.spritecollide(new_segment, sub_group, False)
         if len(self.positions) > 2 and len(hit) > 0:
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound('./snake/assets/music/dead.mp3'))
             self.lives -= 1
             self.game_manager.soft_reset()
         else:

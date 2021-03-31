@@ -61,8 +61,17 @@ python game.py
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)
 * [Google Fonts](https://fonts.google.com/)
+
+### Multiplayer Resources
 * [Youtbe Tutorial multiplayer](https://www.youtube.com/watch?v=McoDjOCb2Zo)
-* [udppong](https://github.com/marvin939/udpong)
+* [udppong - code inspiration multiplayer](https://github.com/marvin939/udpong)
+
+### Music Resources
+* [Creatation of values](https://opengameart.org/content/creation-of-values)
+* [Insert coin](https://opengameart.org/content/insert-coin)
+* [Victory](https://opengameart.org/content/victory-1)
+* [Menu and Jingles](https://opengameart.org/content/ui-and-item-sound-effect-jingles-sample-2)
+* [Death sound effect](https://opengameart.org/content/hurt-death-sound-effect-for-character)
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
