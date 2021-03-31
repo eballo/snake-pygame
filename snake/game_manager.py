@@ -1,3 +1,6 @@
+import json
+import os
+
 import pygame
 
 from snake.food import Food
@@ -25,6 +28,22 @@ class GameManager:
         self.snake = Snake(self)
         self.food = Food(self)
         self.food_sprites.add(self.food)
+        self.joysticks = []
+        self.button_keys = None
+        # 0: Left analog horizonal, 1: Left Analog Vertical, 2: Right Analog Horizontal
+        # 3: Right Analog Vertical 4: Left Trigger, 5: Right Trigger
+        self.analog_keys = {0: 0, 1: 0, 2: 0, 3: 0, 4: -1, 5: -1}
+        self.initialize_controllers()
+
+    def initialize_controllers(self):
+        for i in range(pygame.joystick.get_count()):
+            self.joysticks.append(pygame.joystick.Joystick(i))
+
+        for joystick in self.joysticks:
+            joystick.init()
+
+        with open(os.path.join("./snake/assets/controllers/ps4.json"), 'r+') as file:
+            self.button_keys = json.load(file)
 
     def reset(self):
         self.snake_sprites.empty()

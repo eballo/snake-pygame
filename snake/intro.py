@@ -36,22 +36,29 @@ class Intro(Text):
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.game_manager.run_display = False
-                self.game_manager.running = False
-                self.game_manager.game_running = False
-                self.game_manager.game_over = False
-                self.game_manager.victory = False
+                self.quit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.game_manager.run_display = False
-                    self.game_manager.running = False
-                    self.game_manager.game_running = False
-                    self.game_manager.game_over = False
-                    self.game_manager.victory = False
+                    self.quit()
                 if event.key == pygame.K_SPACE:
-                    self.game_manager.run_display = False
-                    self.game_manager.running = True
-                    self.game_manager.game_running = True
-                    self.game_manager.game_over = False
-                    self.game_manager.victory = False
-                    self.game_manager.reset()
+                    self.start()
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == self.game_manager.button_keys["circle"]:
+                    self.quit()
+                if event.button == self.game_manager.button_keys["x"]:
+                    self.start()
+
+    def quit(self):
+        self.game_manager.run_display = False
+        self.game_manager.running = False
+        self.game_manager.game_running = False
+        self.game_manager.game_over = False
+        self.game_manager.victory = False
+
+    def start(self):
+        self.game_manager.run_display = False
+        self.game_manager.running = True
+        self.game_manager.game_running = True
+        self.game_manager.game_over = False
+        self.game_manager.victory = False
+        self.game_manager.reset()

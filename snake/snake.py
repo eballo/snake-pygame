@@ -80,6 +80,35 @@ class Snake:
                     self.turn(LEFT)
                 elif event.key == pygame.K_RIGHT:
                     self.turn(RIGHT)
+            if event.type == pygame.JOYBUTTONDOWN:
+                if event.button == self.game_manager.button_keys['left_arrow']:
+                    self.turn(LEFT)
+                if event.button == self.game_manager.button_keys['right_arrow']:
+                    self.turn(RIGHT)
+                if event.button == self.game_manager.button_keys['down_arrow']:
+                    self.turn(DOWN)
+                if event.button == self.game_manager.button_keys['up_arrow']:
+                    self.turn(UP)
+                if event.button == self.game_manager.button_keys['circle']:
+                    self.game_manager.game_running = False
+                    self.game_manager.run_display = True
+                    self.game_manager.game_over = False
+            if event.type == pygame.JOYAXISMOTION:
+                self.game_manager.analog_keys[event.axis] = event.value
+                # print(analog_keys)
+                # Horizontal Analog
+                if abs(self.game_manager.analog_keys[0]) > .4:
+                    if self.game_manager.analog_keys[0] < -.7:
+                        self.turn(LEFT)
+                    if self.game_manager.analog_keys[0] > .7:
+                        self.turn(RIGHT)
+                # Vertical Analog
+                if abs(self.game_manager.analog_keys[1]) > .4:
+                    if self.game_manager.analog_keys[1] < -.7:
+                        self.turn(UP)
+                    if self.game_manager.analog_keys[1] > .7:
+                        self.turn(DOWN)
+
 
     def reset(self):
         self.length = 3
