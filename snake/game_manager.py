@@ -20,6 +20,7 @@ class GameManager:
         self.running = True
         self.game_running = True
         self.game_over = False
+        self.victory = False
 
         self.snake = Snake(self)
         self.food = Food(self)
@@ -81,3 +82,7 @@ class GameManager:
             self.game_running = False
             self.run_display = True
             self.game_over = True
+        if self.snake.score == 3:
+            self.game_running = False
+            self.run_display = True
+            self.victory = True

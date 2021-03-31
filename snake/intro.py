@@ -20,8 +20,8 @@ class Intro(Text):
         self.game_manager = game_manager
 
     # Main Menu Screen
-    def display_intro(self):
-        pygame.mixer.music.load('./snake/assets/music/InsertCoin.mp3')
+    def display(self):
+        pygame.mixer.music.load('./snake/assets/music/insertCoin.mp3')
         pygame.mixer.music.play(-1)
         while self.game_manager.run_display:
             self.game_manager.clock.tick(FPS)
@@ -40,15 +40,18 @@ class Intro(Text):
                 self.game_manager.running = False
                 self.game_manager.game_running = False
                 self.game_manager.game_over = False
+                self.game_manager.victory = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game_manager.run_display = False
                     self.game_manager.running = False
                     self.game_manager.game_running = False
                     self.game_manager.game_over = False
+                    self.game_manager.victory = False
                 if event.key == pygame.K_SPACE:
                     self.game_manager.run_display = False
                     self.game_manager.running = True
                     self.game_manager.game_running = True
                     self.game_manager.game_over = False
+                    self.game_manager.victory = False
                     self.game_manager.reset()

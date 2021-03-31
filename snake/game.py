@@ -6,6 +6,7 @@ from snake.game_manager import GameManager
 from snake.game_over import GameOver
 from snake.intro import Intro
 from snake.settings import FPS, BLACK
+from snake.victory import Victory
 
 
 class Game(object):
@@ -44,12 +45,14 @@ class Game(object):
     def start(self):
         intro = Intro(self.game_manager)
         game_over = GameOver(self.game_manager)
+        victory = Victory(self.game_manager)
         # Main file to loop the game
         while self.game_manager.running:
             # Use the menu state machine
-            intro.display_intro()
+            intro.display()
             self.game_loop()
-            game_over.display_game_over()
+            victory.display()
+            game_over.display()
         self.quit()
 
     @staticmethod
