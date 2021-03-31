@@ -23,6 +23,7 @@ class Snake:
         self.game_manager = game_manager
         self.length = 3
         self.score = 0
+        self.lives = 1
         self.positions = [Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
 
@@ -39,12 +40,14 @@ class Snake:
         if new_y < (MENU_HEIGHT - 1) * GRID_HEIGHT:
             new_y = SCREEN_HEIGHT
         new_segment = Segment(new_x, new_y)
+        # check new segment collision with the body
         sub_group = pygame.sprite.Group()
         for seg in self.positions[2:]:
             sub_group.add(seg)
         hit = pygame.sprite.spritecollide(new_segment, sub_group, False)
         if len(self.positions) > 2 and len(hit) > 0:
-            self.game_manager.reset()
+            self.lives -= 1
+            self.game_manager.soft_reset()
         else:
             self.positions.insert(0, new_segment)
             self.game_manager.snake_sprites.add(new_segment)
@@ -64,8 +67,10 @@ class Snake:
                 self.game_manager.running = False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.game_manager.playing = False
-                    self.game_manager.running = False
+                    if self.game_manager.game_running:
+                        self.game_manager.game_running = False
+                        self.game_manager.run_display = True
+                        self.game_manager.game_over = False
                 if event.key == pygame.K_UP:
                     self.turn(UP)
                 elif event.key == pygame.K_DOWN:
@@ -77,7 +82,14 @@ class Snake:
 
     def reset(self):
         self.length = 3
+        self.lives = 1
         self.score = 0
+        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))
+        self.positions = [segment]
+        self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
+        self.game_manager.snake_sprites.add(segment)
+
+    def soft_reset(self):
         segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))
         self.positions = [segment]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
