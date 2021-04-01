@@ -22,7 +22,8 @@ In this game there are tow characters: the snake (the player) and its food. When
 
 
 
-![ScreenShot][product-screenshot]
+![ScreenShot][product-screenshot-1]
+![ScreenShot][product-screenshot-2]
 
 
 ## Getting Started
@@ -61,6 +62,7 @@ python game.py
     * Add Sound Effects + Music
     * Add PS4 controller support
     * Full screen support
+    * Add Level support
   
 
 #### TODO:
@@ -115,4 +117,5 @@ python game.py
 [stars-url]: https://github.com/eballo/snake-pygame/stargazers
 [issues-shield]: https://img.shields.io/github/issues/eballo/snake-pygame.svg?style=flat-square
 [issues-url]: https://github.com/eballo/snake-pygame/issues
-[product-screenshot]: screenshots/screenshot01.png
+[product-screenshot-1]: screenshots/screenshot02.png
+[product-screenshot-2]: screenshots/screenshot03.png
