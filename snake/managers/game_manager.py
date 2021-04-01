@@ -1,10 +1,11 @@
 import pygame
 
+from snake.managers.level_manager import LevelManager
 from snake.models.food import Food
 from snake.managers.game_state import GameState
 from snake.managers.player_commands import PlayerCommands
 from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, MENU_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH, GRID_HEIGHT, \
-    GRID_WIDTH
+    GRID_WIDTH, FPS, BLACK
 from snake.models.snake import Snake
 
 
@@ -19,11 +20,15 @@ class GameManager:
         self.snake_sprites = pygame.sprite.Group()
         self.food_sprites = pygame.sprite.Group()
         self.state = GameState.GAME_INTRO
-        self.player_commands = PlayerCommands(self)
-
+        self.current_level = 0
         self.snake = Snake(self)
         self.food = Food(self)
         self.food_sprites.add(self.food)
+
+        self.stage_name = None
+        self.stage_points = None
+        self.player_commands = PlayerCommands(self)
+        self.level_manager = LevelManager()
 
     def reset(self):
         self.snake_sprites.empty()
@@ -71,13 +76,53 @@ class GameManager:
         print(f"GRID_HEIGHT  : {GRID_HEIGHT}")
         print(f"GRID_WIDTH   : {GRID_WIDTH}")
         print("----")
-        print(f"run_display : {self.run_display}")
-        print(f"game_running : {self.game_running}")
-        print(f"running : {self.running}")
-        print(f"game_running : {self.game_running}")
+        print(f"state : {self.state}")
 
     def validate(self):
         if self.snake.lives == 0:
             self.state = GameState.GAME_OVER
-        if self.snake.score == 3:
-            self.state = GameState.GAME_VICTORY
+        if self.snake.score == self.stage_points:
+            self.state = GameState.GAME_RUNNING
+
+    def start_game(self):
+        if self.state.value == GameState.GAME_RUNNING.value:
+            self.reset()
+        while self.state.value == GameState.GAME_RUNNING.value:
+            self.create_world()
+            self.game_loop()
+
+    def game_loop(self):
+        if self.state.value == GameState.LEVEL_RUNNING.value:
+            pygame.mixer.music.play(-1)
+            while self.state.value == GameState.LEVEL_RUNNING.value:
+                # keep the game loop running at the right speed
+                self.clock.tick(FPS)
+
+                # Process Input (events) - Animations
+                self.process_input()
+                self.validate()
+
+                # Update - Visuals
+                self.snake_sprites.update()
+                self.food_sprites.update()
+
+                # Draw - Render
+                self.screen.fill(BLACK)
+                self.snake_sprites.draw(self.screen)
+                self.food_sprites.draw(self.screen)
+                self.display_score()
+                self.display_lives()
+                pygame.display.flip()
+            pygame.mixer.music.stop()
+            self.current_level += 1
+
+    def create_world(self):
+        if self.state.value == GameState.GAME_RUNNING.value:
+            level = self.level_manager.get_level(self.current_level)
+            if not level:
+                self.state = GameState.GAME_VICTORY
+            else:
+                pygame.mixer.music.load("./snake/assets/music/" + level["music"])
+                self.stage_points = level["points"]
+                self.stage_name = level["name"]
+                self.state = GameState.LEVEL_RUNNING

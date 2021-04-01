@@ -1,0 +1,12 @@
+[
+  {
+    "name":  "level 1",
+    "points": 3,
+    "music": "creationOfValues.mp3"
+  },
+  {
+    "name":  "level 2",
+    "points": 6,
+    "music": "creationOfValues.mp3"
+  }
+]

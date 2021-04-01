@@ -51,7 +51,7 @@ class PlayerCommands:
         self.game_manager.state = GameState.QUIT
 
     def new_game(self):
-        self.game_manager.state = GameState.NEW_GAME
+        self.game_manager.state = GameState.GAME_RUNNING
 
     def intro(self):
         self.game_manager.state = GameState.GAME_INTRO

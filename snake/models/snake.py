@@ -22,6 +22,7 @@ class Snake:
 
     def __init__(self, game_manager, color=SNAKE_COLOR):
         self.game_manager = game_manager
+        self.color = color
         self.length = 3
         self.score = 0
         self.lives = 1
@@ -69,7 +70,7 @@ class Snake:
                 self.game_manager.state = GameState.QUIT
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if self.game_manager.state == GameState.NEW_GAME:
+                    if self.game_manager.state == GameState.GAME_RUNNING:
                         self.game_manager.state = GameState.GAME_INTRO
                 if event.key == pygame.K_UP:
                     self.turn(UP)
