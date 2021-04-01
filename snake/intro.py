@@ -1,5 +1,6 @@
 import pygame
 
+from snake.game_state import GameState
 from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, BLACK, RED, GREEN, FPS, WHITE
 
 
@@ -21,44 +22,15 @@ class Intro(Text):
 
     # Main Menu Screen
     def display(self):
-        pygame.mixer.music.load('./snake/assets/music/insertCoin.mp3')
-        pygame.mixer.music.play(-1)
-        while self.game_manager.run_display:
-            self.game_manager.clock.tick(FPS)
-            self.game_manager.screen.fill(BLACK)
-            self.draw_text("Snake Game", 50, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3, self.game_manager.screen)
-            self.draw_text("Press SPACE key to play", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_WIDTH / 3 + 100,
-                           self.game_manager.screen)
-            pygame.display.flip()
-            self.check_events()
-        pygame.mixer.music.stop()
-
-    def check_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    self.quit()
-                if event.key == pygame.K_SPACE:
-                    self.start()
-            if event.type == pygame.JOYBUTTONDOWN:
-                if event.button == self.game_manager.button_keys["circle"]:
-                    self.quit()
-                if event.button == self.game_manager.button_keys["x"]:
-                    self.start()
-
-    def quit(self):
-        self.game_manager.run_display = False
-        self.game_manager.running = False
-        self.game_manager.game_running = False
-        self.game_manager.game_over = False
-        self.game_manager.victory = False
-
-    def start(self):
-        self.game_manager.run_display = False
-        self.game_manager.running = True
-        self.game_manager.game_running = True
-        self.game_manager.game_over = False
-        self.game_manager.victory = False
-        self.game_manager.reset()
+        if self.game_manager.state.value == GameState.GAME_INTRO.value:
+            pygame.mixer.music.load('./snake/assets/music/insertCoin.mp3')
+            pygame.mixer.music.play(-1)
+            while self.game_manager.state.value == GameState.GAME_INTRO.value:
+                self.game_manager.clock.tick(FPS)
+                self.game_manager.screen.fill(BLACK)
+                self.draw_text("Snake Game", 50, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3, self.game_manager.screen)
+                self.draw_text("Press SPACE key to play", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_WIDTH / 3 + 100,
+                               self.game_manager.screen)
+                pygame.display.flip()
+                self.game_manager.player_commands.check_events()
+            pygame.mixer.music.stop()

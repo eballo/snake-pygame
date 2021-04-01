@@ -55,6 +55,32 @@ python game.py
 * 1.1
     * Add Score
 
+* 1.x
+    * Refactor to use Sprites
+    * Add Victory, Game Over Screen
+    * Add Sound Effects + Music
+    * Add PS4 controller support
+    * Full screen support
+  
+
+#### TODO:
+- History
+- Multiplayer
+- configuration
+    - on / off music
+    - on / off sound effects
+    - Translations
+- Credits
+- Add levels
+  - Increase speed
+  - Add walls
+  - add objects/booms
+- Add food different value, different time
+  - apple
+- Hall of Fame
+- Boss Monster
+- Snake AI
+
 
 ## Acknowledgements
 * [PyGame](https://www.pygame.org/news)
@@ -73,6 +99,8 @@ python game.py
 * [Menu and Jingles](https://opengameart.org/content/ui-and-item-sound-effect-jingles-sample-2)
 * [Death sound effect](https://opengameart.org/content/hurt-death-sound-effect-for-character)
 
+### PS4 Controller
+* [PS4](https://www.youtube.com/watch?v=hqBgJQOa_1E)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->

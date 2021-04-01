@@ -2,6 +2,7 @@ import random
 
 import pygame
 
+from snake.game_state import GameState
 from snake.settings import UP, DOWN, LEFT, RIGHT, GRID_SIZE, BOARD_WIDTH, BOARD_HEIGHT, SNAKE_COLOR, \
     MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT
 
@@ -65,13 +66,11 @@ class Snake:
     def handle_keys(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.game_manager.running = False
+                self.game_manager.state = GameState.QUIT
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if self.game_manager.game_running:
-                        self.game_manager.game_running = False
-                        self.game_manager.run_display = True
-                        self.game_manager.game_over = False
+                    if self.game_manager.state == GameState.NEW_GAME:
+                        self.game_manager.state = GameState.GAME_INTRO
                 if event.key == pygame.K_UP:
                     self.turn(UP)
                 elif event.key == pygame.K_DOWN:
@@ -90,9 +89,7 @@ class Snake:
                 if event.button == self.game_manager.button_keys['up_arrow']:
                     self.turn(UP)
                 if event.button == self.game_manager.button_keys['circle']:
-                    self.game_manager.game_running = False
-                    self.game_manager.run_display = True
-                    self.game_manager.game_over = False
+                    self.game_manager.state = GameState.GAME_INTRO
             if event.type == pygame.JOYAXISMOTION:
                 self.game_manager.analog_keys[event.axis] = event.value
                 # print(analog_keys)

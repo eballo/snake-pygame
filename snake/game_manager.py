@@ -4,6 +4,8 @@ import os
 import pygame
 
 from snake.food import Food
+from snake.game_state import GameState
+from snake.player_commands import PlayerCommands
 from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, MENU_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH, GRID_HEIGHT, \
     GRID_WIDTH
 from snake.snake import Snake
@@ -14,36 +16,17 @@ class GameManager:
     def __init__(self):
         self.font = pygame.font.Font("./snake/assets/fonts/RobotoMono-VariableFont_wght.ttf", 16)
         self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
         self.surface = pygame.Surface(self.screen.get_size())
         self.surface = self.surface.convert()
         self.snake_sprites = pygame.sprite.Group()
         self.food_sprites = pygame.sprite.Group()
-        self.run_display = True
-        self.running = True
-        self.game_running = True
-        self.game_over = False
-        self.victory = False
+        self.state = GameState.GAME_INTRO
+        self.player_commands = PlayerCommands(self)
 
         self.snake = Snake(self)
         self.food = Food(self)
         self.food_sprites.add(self.food)
-        self.joysticks = []
-        self.button_keys = None
-        # 0: Left analog horizonal, 1: Left Analog Vertical, 2: Right Analog Horizontal
-        # 3: Right Analog Vertical 4: Left Trigger, 5: Right Trigger
-        self.analog_keys = {0: 0, 1: 0, 2: 0, 3: 0, 4: -1, 5: -1}
-        self.initialize_controllers()
-
-    def initialize_controllers(self):
-        for i in range(pygame.joystick.get_count()):
-            self.joysticks.append(pygame.joystick.Joystick(i))
-
-        for joystick in self.joysticks:
-            joystick.init()
-
-        with open(os.path.join("./snake/assets/controllers/ps4.json"), 'r+') as file:
-            self.button_keys = json.load(file)
 
     def reset(self):
         self.snake_sprites.empty()
@@ -98,10 +81,6 @@ class GameManager:
 
     def validate(self):
         if self.snake.lives == 0:
-            self.game_running = False
-            self.run_display = True
-            self.game_over = True
+            self.state = GameState.GAME_OVER
         if self.snake.score == 3:
-            self.game_running = False
-            self.run_display = True
-            self.victory = True
+            self.state = GameState.GAME_VICTORY
