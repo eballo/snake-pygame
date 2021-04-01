@@ -21,7 +21,7 @@ class GameManager:
         self.food_sprites = pygame.sprite.Group()
         self.state = GameState.GAME_INTRO
         self.current_level = 0
-        self.snake = Snake(self)
+        self.player = Snake(self)
         self.food = Food(self)
         self.food_sprites.add(self.food)
 
@@ -35,24 +35,24 @@ class GameManager:
         self.current_level = 0
         self.snake_sprites.empty()
         self.food_sprites.empty()
-        self.snake.reset()
+        self.player.reset()
         self.food = Food(self)
         self.food_sprites.add(self.food)
 
     def soft_reset(self):
         self.snake_sprites.empty()
         self.food_sprites.empty()
-        self.snake.soft_reset()
+        self.player.soft_reset()
         self.food = Food(self)
         self.food_sprites.add(self.food)
 
     def process_input(self):
-        self.snake.handle_keys()
-        self.snake.move()
+        self.player_commands.check_events(self.player)
+        self.player.move()
         hits = pygame.sprite.groupcollide(self.food_sprites, self.snake_sprites, False, False)
         if len(hits) > 0:
             for hit in hits:
-                self.eat_food(self.snake, self.food)
+                self.eat_food(self.player, self.food)
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./snake/assets/music/item.wav'), maxtime=600)
 
     @staticmethod
@@ -62,11 +62,11 @@ class GameManager:
         food.randomize_position()
 
     def display_score(self):
-        text = self.font.render("Score {0}".format(self.snake.score), True, WHITE)
+        text = self.font.render("Score {0}".format(self.player.score), True, WHITE)
         self.screen.blit(text, (5, 10))
 
     def display_lives(self):
-        text = self.font.render("Lives {0}".format(self.snake.lives), True, WHITE)
+        text = self.font.render("Lives {0}".format(self.player.lives), True, WHITE)
         self.screen.blit(text, (200, 10))
 
     def display_stage(self):
@@ -85,9 +85,9 @@ class GameManager:
         print(f"state : {self.state}")
 
     def validate(self):
-        if self.snake.lives == 0:
+        if self.player.lives == 0:
             self.state = GameState.GAME_OVER
-        if self.snake.score == self.stage_points:
+        if self.player.score == self.stage_points:
             self.state = GameState.GAME_RUNNING
 
     def start_game(self):
