@@ -17,18 +17,16 @@ class Game(object):
         pygame.font.init()
         pygame.display.set_caption("Snake!")
         self.game_manager = GameManager()
+        self.intro = Intro(self.game_manager)
+        self.game_over = GameOver(self.game_manager)
+        self.victory = Victory(self.game_manager)
 
     def start(self):
-        intro = Intro(self.game_manager)
-        game_over = GameOver(self.game_manager)
-        victory = Victory(self.game_manager)
-        # Main file to loop the game
         while self.game_manager.state.value >= GameState.RUNNING.value:
-            # Use the menu state machine
-            intro.display()
+            self.intro.display()
             self.game_manager.start_game()
-            victory.display()
-            game_over.display()
+            self.victory.display()
+            self.game_over.display()
         self.quit()
 
     @staticmethod

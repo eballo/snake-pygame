@@ -2,7 +2,6 @@ import random
 
 import pygame
 
-from snake.managers.game_state import GameState
 from snake.settings import UP, DOWN, LEFT, RIGHT, GRID_SIZE, BOARD_WIDTH, BOARD_HEIGHT, SNAKE_COLOR, \
     MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT
 
@@ -63,7 +62,6 @@ class Snake:
             return
         else:
             self.direction = point
-
 
     def reset(self):
         self.length = 3

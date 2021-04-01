@@ -44,12 +44,15 @@ class PlayerCommands:
                         self.intro()
                 if event.key == pygame.K_f:
                     if not self.game_manager.full_screen:
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
+                                                pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
                         self.game_manager.full_screen = True
                     else:
-                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF)
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),
+                                                pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF)
                         self.game_manager.full_screen = False
-                if self.game_manager.state == GameState.GAME_RUNNING or self.game_manager.state == GameState.LEVEL_RUNNING:
+                if self.game_manager.state == GameState.GAME_RUNNING or \
+                        self.game_manager.state == GameState.LEVEL_RUNNING:
                     if event.key == pygame.K_UP:
                         player.turn(UP)
                     elif event.key == pygame.K_DOWN:
@@ -63,7 +66,8 @@ class PlayerCommands:
                     self.quit()
                 if event.button == self.button_keys["x"]:
                     self.new_game()
-                if self.game_manager.state == GameState.GAME_RUNNING or self.game_manager.state == GameState.LEVEL_RUNNING:
+                if self.game_manager.state == GameState.GAME_RUNNING or \
+                        self.game_manager.state == GameState.LEVEL_RUNNING:
                     if event.button == self.button_keys['left_arrow']:
                         player.turn(LEFT)
                     if event.button == self.button_keys['right_arrow']:
@@ -73,7 +77,8 @@ class PlayerCommands:
                     if event.button == self.button_keys['up_arrow']:
                         player.turn(UP)
             if event.type == pygame.JOYAXISMOTION:
-                if self.game_manager.state == GameState.GAME_RUNNING or self.game_manager.state == GameState.LEVEL_RUNNING:
+                if self.game_manager.state == GameState.GAME_RUNNING or \
+                        self.game_manager.state == GameState.LEVEL_RUNNING:
                     self.analog_keys[event.axis] = event.value
                     if abs(self.analog_keys[0]) > .4:
                         if self.analog_keys[0] < -.7:
