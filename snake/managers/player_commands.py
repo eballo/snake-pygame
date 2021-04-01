@@ -33,6 +33,7 @@ class PlayerCommands:
             if event.type == pygame.QUIT:
                 self.quit()
             if event.type == pygame.KEYDOWN:
+                print("key pressed")
                 if event.key == pygame.K_ESCAPE:
                     self.quit()
                 if event.key == pygame.K_SPACE:

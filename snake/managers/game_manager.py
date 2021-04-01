@@ -11,7 +11,7 @@ from snake.models.snake import Snake
 
 class GameManager:
 
-    def __init__(self):
+    def __init__(self, multiplayer=False):
         self.font = pygame.font.Font("./snake/assets/fonts/RobotoMono-VariableFont_wght.ttf", 16)
         self.clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF)
@@ -26,6 +26,7 @@ class GameManager:
         self.food_sprites.add(self.food)
 
         self.full_screen = False
+        self.multiplayer = multiplayer
         self.stage_name = None
         self.stage_points = None
         self.player_commands = PlayerCommands(self)
