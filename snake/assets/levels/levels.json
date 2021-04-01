@@ -1,11 +1,11 @@
 [
   {
-    "name":  "New Start - Level 1",
+    "name":  "Level 1",
     "points": 3,
     "music": "creationOfValues.mp3"
   },
   {
-    "name":  "The Tunnel - Level 2",
+    "name":  "Level 2",
     "points": 6,
     "music": "tunel.mp3"
   }

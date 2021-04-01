@@ -71,7 +71,7 @@ class GameManager:
 
     def display_stage(self):
         text = self.font.render(self.stage_name, True, WHITE)
-        self.screen.blit(text, (300, 10))
+        self.screen.blit(text, (650, 10))
 
     def debug(self):
         print(f"MENU_HEIGHT  : {MENU_HEIGHT}")
