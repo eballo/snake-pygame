@@ -4,6 +4,7 @@ import os
 import pygame
 
 from snake.managers.game_state import GameState
+from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class PlayerCommands:
@@ -41,6 +42,13 @@ class PlayerCommands:
                         self.intro()
                     elif self.game_manager.state == GameState.GAME_VICTORY:
                         self.intro()
+                if event.key == pygame.K_f:
+                    if not self.game_manager.full_screen:
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF)
+                        self.game_manager.full_screen = True
+                    else:
+                        pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF)
+                        self.game_manager.full_screen = False
             if event.type == pygame.JOYBUTTONDOWN:
                 if event.button == self.button_keys["circle"]:
                     self.quit()
