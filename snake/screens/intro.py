@@ -1,7 +1,7 @@
 import pygame
 
-from snake.game_state import GameState
-from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, BLACK, RED, GREEN, FPS, WHITE
+from snake.managers.game_state import GameState
+from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, BLACK, RED, FPS, WHITE
 
 
 class Text:

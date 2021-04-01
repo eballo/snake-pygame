@@ -1,14 +1,11 @@
-import json
-import os
-
 import pygame
 
-from snake.food import Food
-from snake.game_state import GameState
-from snake.player_commands import PlayerCommands
+from snake.models.food import Food
+from snake.managers.game_state import GameState
+from snake.managers.player_commands import PlayerCommands
 from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, MENU_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH, GRID_HEIGHT, \
     GRID_WIDTH
-from snake.snake import Snake
+from snake.models.snake import Snake
 
 
 class GameManager:

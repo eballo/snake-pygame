@@ -2,12 +2,12 @@ import sys
 
 import pygame
 
-from snake.game_manager import GameManager
-from snake.game_over import GameOver
-from snake.game_state import GameState
-from snake.intro import Intro
+from snake.managers.game_manager import GameManager
+from snake.screens.game_over import GameOver
+from snake.managers.game_state import GameState
+from snake.screens.intro import Intro
 from snake.settings import FPS, BLACK
-from snake.victory import Victory
+from snake.screens.victory import Victory
 
 
 class Game(object):

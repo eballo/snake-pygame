@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from snake.game_state import GameState
+from snake.managers.game_state import GameState
 from snake.settings import UP, DOWN, LEFT, RIGHT, GRID_SIZE, BOARD_WIDTH, BOARD_HEIGHT, SNAKE_COLOR, \
     MENU_HEIGHT, GRID_HEIGHT, SCREEN_HEIGHT
 

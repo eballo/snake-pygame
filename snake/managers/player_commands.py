@@ -3,7 +3,7 @@ import os
 
 import pygame
 
-from snake.game_state import GameState
+from snake.managers.game_state import GameState
 
 
 class PlayerCommands:

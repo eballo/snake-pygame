@@ -1,8 +1,8 @@
 import pygame
 
-from snake.game_state import GameState
-from snake.intro import Text
-from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, RED, GREEN, BLACK, FPS, YELLOW
+from snake.managers.game_state import GameState
+from snake.screens.intro import Text
+from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, GREEN, BLACK, FPS, YELLOW
 
 
 class Victory(Text):
