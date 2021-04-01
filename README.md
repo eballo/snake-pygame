@@ -98,6 +98,7 @@ python game.py
 * [Victory](https://opengameart.org/content/victory-1)
 * [Menu and Jingles](https://opengameart.org/content/ui-and-item-sound-effect-jingles-sample-2)
 * [Death sound effect](https://opengameart.org/content/hurt-death-sound-effect-for-character)
+* [The Tunnel](https://opengameart.org/content/the-tunnel-2)
 
 ### PS4 Controller
 * [PS4](https://www.youtube.com/watch?v=hqBgJQOa_1E)

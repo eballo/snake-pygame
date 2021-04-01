@@ -31,6 +31,7 @@ class GameManager:
         self.level_manager = LevelManager()
 
     def reset(self):
+        self.current_level = 0
         self.snake_sprites.empty()
         self.food_sprites.empty()
         self.snake.reset()
@@ -60,12 +61,16 @@ class GameManager:
         food.randomize_position()
 
     def display_score(self):
-        text = self.font.render("Score {0}".format(self.snake.score), 1, WHITE)
+        text = self.font.render("Score {0}".format(self.snake.score), True, WHITE)
         self.screen.blit(text, (5, 10))
 
     def display_lives(self):
-        text = self.font.render("Lives {0}".format(self.snake.lives), 1, WHITE)
+        text = self.font.render("Lives {0}".format(self.snake.lives), True, WHITE)
         self.screen.blit(text, (200, 10))
+
+    def display_stage(self):
+        text = self.font.render(self.stage_name, True, WHITE)
+        self.screen.blit(text, (300, 10))
 
     def debug(self):
         print(f"MENU_HEIGHT  : {MENU_HEIGHT}")
@@ -87,9 +92,9 @@ class GameManager:
     def start_game(self):
         if self.state.value == GameState.GAME_RUNNING.value:
             self.reset()
-        while self.state.value == GameState.GAME_RUNNING.value:
-            self.create_world()
-            self.game_loop()
+            while self.state.value == GameState.GAME_RUNNING.value:
+                self.create_world()
+                self.game_loop()
 
     def game_loop(self):
         if self.state.value == GameState.LEVEL_RUNNING.value:
@@ -112,6 +117,7 @@ class GameManager:
                 self.food_sprites.draw(self.screen)
                 self.display_score()
                 self.display_lives()
+                self.display_stage()
                 pygame.display.flip()
             pygame.mixer.music.stop()
             self.current_level += 1

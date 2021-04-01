@@ -7,6 +7,5 @@ class GameState(Enum):
     GAME_INTRO = 2
     GAME_RUNNING = 3
     LEVEL_RUNNING = 4
-    LEVEL_FINISHED = 5
-    GAME_OVER = 6
-    GAME_VICTORY = 7
+    GAME_OVER = 5
+    GAME_VICTORY = 6

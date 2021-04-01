@@ -70,7 +70,8 @@ class Snake:
                 self.game_manager.state = GameState.QUIT
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if self.game_manager.state == GameState.GAME_RUNNING:
+                    if self.game_manager.state == GameState.GAME_RUNNING or \
+                            self.game_manager.state == GameState.LEVEL_RUNNING:
                         self.game_manager.state = GameState.GAME_INTRO
                 if event.key == pygame.K_UP:
                     self.turn(UP)
@@ -106,7 +107,6 @@ class Snake:
                         self.turn(UP)
                     if self.game_manager.analog_keys[1] > .7:
                         self.turn(DOWN)
-
 
     def reset(self):
         self.length = 3
