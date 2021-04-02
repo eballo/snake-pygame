@@ -18,10 +18,12 @@ class GameManager:
         self.surface = pygame.Surface(self.screen.get_size())
         self.surface = self.surface.convert()
         self.snake_sprites = pygame.sprite.Group()
+        self.other_players_sprites = pygame.sprite.Group()
         self.food_sprites = pygame.sprite.Group()
         self.state = GameState.GAME_INTRO
         self.current_level = 0
         self.player = Snake(self)
+        self.players = []
         self.food = Food(self)
         self.food_sprites.add(self.food)
 
@@ -52,7 +54,7 @@ class GameManager:
         self.player.move()
         hits = pygame.sprite.groupcollide(self.food_sprites, self.snake_sprites, False, False)
         if len(hits) > 0:
-            for hit in hits:
+            for _ in hits:
                 self.eat_food(self.player, self.food)
                 pygame.mixer.Channel(0).play(pygame.mixer.Sound('./snake/assets/music/item.wav'), maxtime=600)
 

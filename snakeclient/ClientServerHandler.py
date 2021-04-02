@@ -1,14 +1,13 @@
-import random
+import json
 import threading
 import socket
-from time import sleep
 
 from snakeserver.settings import DEFAULT_TIMEOUT, COMMAND_CLIENT_CONNECT, FORMAT, BUFFER_SIZE
 
 
 class ClientServerHandler(socket.socket, threading.Thread):
 
-    def __init__(self, bind_address, server_address):
+    def __init__(self, bind_address, server_address, game_manager):
         socket.socket.__init__(self, type=socket.SOCK_DGRAM)
         threading.Thread.__init__(self)
         self.settimeout(DEFAULT_TIMEOUT)
@@ -16,6 +15,7 @@ class ClientServerHandler(socket.socket, threading.Thread):
         self.bind(bind_address)
         self.server_address = server_address
         self.player_number = -1
+        self.game_manager = game_manager
 
     def run(self):
         self.connect()
@@ -23,11 +23,8 @@ class ClientServerHandler(socket.socket, threading.Thread):
         print(f"player number: {self.player_number}")
 
         while True:
-            #     game_update_json = self.receive_game_update_json()
-            #     self.pong_world.update_with_json(game_update_json)
-            text = random.randint(1, 1000)
-            sleep(2)
-            self.send_client_update(str(text))
+            self.receive_other_players_updates_json()
+            self.send_client_update(self.game_manager.player.get_json())
 
     def __del__(self):
         self.close()
@@ -53,22 +50,21 @@ class ClientServerHandler(socket.socket, threading.Thread):
         self.server_address = address
         return player_number
 
-    # def receive_game_update_json(self, return_dict=None):
-    #     data, address = self.recvfrom(self.BUFFER_SIZE)
-    #     if data is None:
-    #         raise ValueError('Unable to receive game update!')
-    #         return -1
-    #     decoded_json = data.decode('utf-8')
-    #     try:
-    #         # pong_update = json.loads(decoded_json, object_hook=pong.common.from_json)
-    #         pass
-    #     except json.JSONDecodeError as err:
-    #         raise json.JSONDecodeError(err + ' Not a JSON string!')
-    #     if return_dict is not None and isinstance(return_dict, dict):
-    #         return_dict['game_update_json'] = decoded_json
-    #     return decoded_json
+    def receive_other_players_updates_json(self):
+        data, address = self.recvfrom(BUFFER_SIZE)
+        if data is None:
+            raise ValueError('Unable to receive game update!')
+        decoded = data.decode(FORMAT)
+        other_players_json = json.loads(decoded)
+
+        self.game_manager.other_players_sprites.empty()
+        for player in other_players_json:
+            snake = self.game_manager.player.update_from_json(player)
+            self.game_manager.players.append(snake)
+            for seg in snake.positions:
+                self.game_manager.other_players_sprites.add(seg)
 
     def send_client_update(self, text):
         message = text.encode(FORMAT)
-        print(f'message:{message}, address: {self.server_address}')
+        # print(f'message:{message}, address: {self.server_address}')
         self.sendto(message, self.server_address)

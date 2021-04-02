@@ -25,7 +25,7 @@ class SnakeClient:
         local_address = ('localhost', random.randint(10000, 20000))
         server_address = (self.ip_server, self.port_server)
 
-        svh = ClientServerHandler(local_address, server_address)
+        svh = ClientServerHandler(local_address, server_address, self.game_manager)
         svh.start()
 
         print(f'[START] Client starting...')
@@ -42,11 +42,13 @@ class SnakeClient:
             # Update - Visuals
             self.game_manager.snake_sprites.update()
             self.game_manager.food_sprites.update()
+            self.game_manager.other_players_sprites.update()
 
             # Draw - Render
             self.game_manager.screen.fill(BLACK)
             self.game_manager.snake_sprites.draw(self.game_manager.screen)
             self.game_manager.food_sprites.draw(self.game_manager.screen)
+            self.game_manager.other_players_sprites.draw(self.game_manager.screen)
             self.game_manager.display_score()
             self.game_manager.display_lives()
             self.game_manager.display_stage()

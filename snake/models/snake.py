@@ -1,3 +1,4 @@
+import json
 import random
 
 import pygame
@@ -77,6 +78,27 @@ class Snake:
         self.positions = [segment]
         self.direction = random.choice([UP, DOWN, LEFT, RIGHT])
         self.game_manager.snake_sprites.add(segment)
+
+    def get_json(self):
+        segments = []
+        for pos in self.positions:
+            segments.append((pos.rect.x, pos.rect.y))
+        data = {"direction": self.direction, "positions": segments, "color": self.color, "length": self.length,
+                "lives": self.lives}
+        return json.dumps(data)
+
+    def update_from_json(self, json_response):
+        snake = Snake(self.game_manager)
+        segments = []
+        for pos in json_response["positions"]:
+            segments.append(Segment(pos[0], pos[1], json_response["color"]))
+
+        snake.color = json_response["color"]
+        snake.direction = json_response["direction"]
+        snake.positions = segments
+        snake.length = json_response["length"]
+        snake.lives = json_response["lives"]
+        return snake
 
     def debug_info(self):
         print("----")
