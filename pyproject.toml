@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "snake-pygame"
+version = "0.2.0"
+description = "Classic Snake built with pygame"
+authors = ["Enric Ballo"]
+readme = "README.md"
+packages = [{ include = "snake" }]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+pygame = "^2.6.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.0"
+ruff = "^0.6.0"
+mypy = "^1.11.0"
+pytest = "^8.0.0"
+
+[tool.poetry.scripts]
+snake = "snake.__main__:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+
+[tool.black]
+line-length = 100
