@@ -8,7 +8,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Python 3.7][python-shield]][python-url]
+[![Python 3.12][python-shield]][python-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -35,7 +35,8 @@ To get a local copy up and running follow these simple example steps.
 Install the project dependencies
 
 ```sh
-pip install -r requirements.txt
+python -v venv venv
+pip install poetry
 ```
 
 ## Usage
@@ -50,20 +51,24 @@ python game.py
 
 ## Release History
 
-* 1.0
-    * Pygame working version
+* 0.1.0
+  * Pygame working version
 
-* 1.1
-    * Add Score
+* 0.1.1
+  * Add Score
 
-* 1.x
-    * Refactor to use Sprites
-    * Add Victory, Game Over Screen
-    * Add Sound Effects + Music
-    * Add PS4 controller support
-    * Full screen support
-    * Add Level support
-  
+* 0.1.2
+  * Refactor to use Sprites
+  * Add Victory, Game Over Screen
+  * Add Sound Effects + Music
+  * Add PS4 controller support
+  * Full screen support
+  * Add Level support
+
+* 0.1.3
+  * Add poetry + [ black + ruff + mypy + pytest ]
+  * Update pygame to 2.60.0
+  * Update to python 3.12
 
 #### TODO:
 - History
