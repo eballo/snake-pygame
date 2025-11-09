@@ -1,30 +1,43 @@
-import pygame
+from pygame import font, time, display, RESIZABLE, HWSURFACE, DOUBLEBUF, sprite, Surface, mixer
+from pygame.sprite import Group
 
-from snake.managers.level_manager import LevelManager
-from snake.models.food import Food
 from snake.managers.game_state import GameState
+from snake.managers.level_manager import LevelManager
 from snake.managers.player_commands import PlayerCommands
-from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, MENU_HEIGHT, BOARD_HEIGHT, BOARD_WIDTH, GRID_HEIGHT, \
-    GRID_WIDTH, FPS, BLACK
+from snake.models.food import Food
 from snake.models.snake import Snake
+from snake.settings import (
+    SCREEN_WIDTH,
+    SCREEN_HEIGHT,
+    WHITE,
+    MENU_HEIGHT,
+    BOARD_HEIGHT,
+    BOARD_WIDTH,
+    GRID_HEIGHT,
+    GRID_WIDTH,
+    FPS,
+    BLACK,
+)
 
 
 class GameManager:
 
-    def __init__(self, multiplayer=False):
-        self.font = pygame.font.Font("./snake/assets/fonts/RobotoMono-VariableFont_wght.ttf", 16)
-        self.clock = pygame.time.Clock()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF)
-        self.surface = pygame.Surface(self.screen.get_size())
+    def __init__(self, multiplayer: bool = False) -> None:
+        self.font = font.Font("./snake/assets/fonts/RobotoMono-VariableFont_wght.ttf", 16)
+        self.clock = time.Clock()
+        self.screen = display.set_mode(
+            (SCREEN_WIDTH, SCREEN_HEIGHT), RESIZABLE | HWSURFACE | DOUBLEBUF
+        )
+        self.surface = Surface(self.screen.get_size())
         self.surface = self.surface.convert()
-        self.snake_sprites = pygame.sprite.Group()
-        self.other_players_sprites = pygame.sprite.Group()
-        self.food_sprites = pygame.sprite.Group()
+        self.snake_sprites: Group = sprite.Group()
+        self.other_players_sprites: Group = sprite.Group()
+        self.food_sprites: Group = sprite.Group()
         self.state = GameState.GAME_INTRO
         self.current_level = 0
         self.player = Snake(self)
-        self.players = []
-        self.food = Food(self)
+        self.players: list[Snake] = []
+        self.food: Food = Food(self)
         self.food_sprites.add(self.food)
 
         self.full_screen = False
@@ -34,7 +47,7 @@ class GameManager:
         self.player_commands = PlayerCommands(self)
         self.level_manager = LevelManager()
 
-    def reset(self):
+    def reset(self) -> None:
         self.current_level = 0
         self.snake_sprites.empty()
         self.food_sprites.empty()
@@ -42,41 +55,41 @@ class GameManager:
         self.food = Food(self)
         self.food_sprites.add(self.food)
 
-    def soft_reset(self):
+    def soft_reset(self) -> None:
         self.snake_sprites.empty()
         self.food_sprites.empty()
         self.player.soft_reset()
         self.food = Food(self)
         self.food_sprites.add(self.food)
 
-    def process_input(self):
+    def process_input(self) -> None:
         self.player_commands.check_events(self.player)
         self.player.move()
-        hits = pygame.sprite.groupcollide(self.food_sprites, self.snake_sprites, False, False)
+        hits = sprite.groupcollide(self.food_sprites, self.snake_sprites, False, False)
         if len(hits) > 0:
             for _ in hits:
                 self.eat_food(self.player, self.food)
-                pygame.mixer.Channel(0).play(pygame.mixer.Sound('./snake/assets/music/item.wav'), maxtime=600)
+                mixer.Channel(0).play(mixer.Sound("./snake/assets/music/item.wav"), maxtime=600)
 
     @staticmethod
-    def eat_food(snake, food):
+    def eat_food(snake: Snake, food: Food) -> None:
         snake.length += 1
         snake.score += 1
         food.randomize_position()
 
-    def display_score(self):
+    def display_score(self) -> None:
         text = self.font.render("Score {0}".format(self.player.score), True, WHITE)
         self.screen.blit(text, (5, 10))
 
-    def display_lives(self):
+    def display_lives(self) -> None:
         text = self.font.render("Lives {0}".format(self.player.lives), True, WHITE)
         self.screen.blit(text, (200, 10))
 
-    def display_stage(self):
+    def display_stage(self) -> None:
         text = self.font.render(self.stage_name, True, WHITE)
         self.screen.blit(text, (650, 10))
 
-    def debug(self):
+    def debug(self) -> None:
         print(f"MENU_HEIGHT  : {MENU_HEIGHT}")
         print(f"BOARD_HEIGHT : {BOARD_HEIGHT}")
         print(f"BOARD_WIDTH  : {BOARD_WIDTH}")
@@ -87,22 +100,22 @@ class GameManager:
         print("----")
         print(f"state : {self.state}")
 
-    def validate(self):
+    def validate(self) -> None:
         if self.player.lives == 0:
             self.state = GameState.GAME_OVER
         if self.player.score == self.stage_points:
             self.state = GameState.GAME_RUNNING
 
-    def start_game(self):
+    def start_game(self) -> None:
         if self.state.value == GameState.GAME_RUNNING.value:
             self.reset()
             while self.state.value == GameState.GAME_RUNNING.value:
                 self.create_world()
                 self.game_loop()
 
-    def game_loop(self):
+    def game_loop(self) -> None:
         if self.state.value == GameState.LEVEL_RUNNING.value:
-            pygame.mixer.music.play(-1)
+            mixer.music.play(-1)
             while self.state.value == GameState.LEVEL_RUNNING.value:
                 # keep the game loop running at the right speed
                 self.clock.tick(FPS)
@@ -122,17 +135,17 @@ class GameManager:
                 self.display_score()
                 self.display_lives()
                 self.display_stage()
-                pygame.display.flip()
-            pygame.mixer.music.stop()
+                display.flip()
+            mixer.music.stop()
             self.current_level += 1
 
-    def create_world(self):
+    def create_world(self) -> None:
         if self.state.value == GameState.GAME_RUNNING.value:
             level = self.level_manager.get_level(self.current_level)
             if not level:
                 self.state = GameState.GAME_VICTORY
             else:
-                pygame.mixer.music.load("./snake/assets/music/" + level["music"])
+                mixer.music.load("./snake/assets/music/" + level["music"])
                 self.stage_points = level["points"]
                 self.stage_name = level["name"]
                 self.state = GameState.LEVEL_RUNNING

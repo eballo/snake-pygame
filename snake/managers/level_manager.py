@@ -4,11 +4,11 @@ import os
 
 class LevelManager:
 
-    def __init__(self):
-        with open(os.path.join("./snake/assets/levels/levels.json"), 'r+') as file:
+    def __init__(self) -> None:
+        with open(os.path.join("./snake/assets/levels/levels.json"), "r+") as file:
             self.levels = json.load(file)
 
-    def get_level(self, level):
+    def get_level(self, level: int) -> dict | None:
         if level >= len(self.levels):
-            return
+            return None
         return self.levels[level]

@@ -1,5 +1,7 @@
-import pygame
+from pygame import display, mixer
+from pygame import font as pygame_font
 
+from snake.managers.game_manager import GameManager
 from snake.managers.game_state import GameState
 from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, BLACK, RED, FPS, WHITE
 
@@ -8,7 +10,7 @@ class Text:
 
     @staticmethod
     def draw_text(text, size, color, x, y, screen):
-        font = pygame.font.Font("./snake/assets/fonts/RobotoMono-VariableFont_wght.ttf", size)
+        font = pygame_font.Font("./snake/assets/fonts/RobotoMono-VariableFont_wght.ttf", size)
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
         text_rect.midtop = (x, y)
@@ -17,20 +19,33 @@ class Text:
 
 class Intro(Text):
 
-    def __init__(self, game_manager):
+    def __init__(self, game_manager: GameManager) -> None:
         self.game_manager = game_manager
 
     # Main Menu Screen
-    def display(self):
+    def display(self) -> None:
         if self.game_manager.state.value == GameState.GAME_INTRO.value:
-            pygame.mixer.music.load('./snake/assets/music/insertCoin.mp3')
-            pygame.mixer.music.play(-1)
+            mixer.music.load("./snake/assets/music/insertCoin.mp3")
+            mixer.music.play(-1)
             while self.game_manager.state.value == GameState.GAME_INTRO.value:
                 self.game_manager.clock.tick(FPS)
                 self.game_manager.screen.fill(BLACK)
-                self.draw_text("Snake Game", 50, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3, self.game_manager.screen)
-                self.draw_text("Press SPACE key to play", 22, WHITE, SCREEN_WIDTH / 2, SCREEN_WIDTH / 3 + 100,
-                               self.game_manager.screen)
-                pygame.display.flip()
+                self.draw_text(
+                    "Snake Game",
+                    50,
+                    RED,
+                    SCREEN_WIDTH / 2,
+                    SCREEN_HEIGHT / 3,
+                    self.game_manager.screen,
+                )
+                self.draw_text(
+                    "Press SPACE key to play",
+                    22,
+                    WHITE,
+                    SCREEN_WIDTH / 2,
+                    SCREEN_WIDTH / 3 + 100,
+                    self.game_manager.screen,
+                )
+                display.flip()
                 self.game_manager.player_commands.check_events()
-            pygame.mixer.music.stop()
+            mixer.music.stop()

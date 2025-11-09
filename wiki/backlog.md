@@ -1,0 +1,17 @@
+#### TODO:
+- History
+- Multiplayer
+- configuration
+    - on / off music
+    - on / off sound effects
+    - Translations
+- Credits
+- Add levels
+  - Increase speed
+  - Add walls
+  - add objects/booms
+- Add food different value, different time
+  - apple
+- Hall of Fame
+- Boss Monster
+- Snake AI
