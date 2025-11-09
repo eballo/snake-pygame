@@ -1,6 +1,6 @@
-import random
+from random import randint
 
-import pygame
+from pygame import init, mixer, font, display
 
 from snake.managers.game_manager import GameManager
 from snake.managers.game_state import GameState
@@ -11,24 +11,24 @@ from snakeserver.settings import DEFAULT_IP_SERVER, DEFAULT_PORT
 
 class SnakeClient:
 
-    def __init__(self, ip_server=None, port_server=None):
-        pygame.init()
-        pygame.mixer.init()
-        pygame.font.init()
-        pygame.display.set_caption("Snake!")
+    def __init__(self, ip_server: str | None = None, port_server: int | None = None) -> None:
+        init()
+        mixer.init()
+        font.init()
+        display.set_caption("Snake!")
         self.game_manager = GameManager(multiplayer=True)
         self.ip_server = DEFAULT_IP_SERVER if ip_server is None else ip_server
         self.port_server = DEFAULT_PORT if port_server is None else port_server
 
-    def start(self):
+    def start(self) -> None:
         # Randomly generate the address for this client
-        local_address = ('localhost', random.randint(10000, 20000))
+        local_address = ("localhost", randint(10000, 20000))
         server_address = (self.ip_server, self.port_server)
 
         svh = ClientServerHandler(local_address, server_address, self.game_manager)
         svh.start()
 
-        print(f'[START] Client starting...')
+        print("[START] Client starting...")
         self.game_manager.state = GameState.GAME_RUNNING
 
         while self.game_manager.state == GameState.GAME_RUNNING:
@@ -52,9 +52,9 @@ class SnakeClient:
             self.game_manager.display_score()
             self.game_manager.display_lives()
             self.game_manager.display_stage()
-            pygame.display.flip()
+            display.flip()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     client = SnakeClient()
     client.start()

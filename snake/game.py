@@ -1,10 +1,11 @@
-import sys
+from sys import exit as quit_app
 
-import pygame
+from pygame import init, mixer, font, display
+from pygame import quit as quit_game
 
 from snake.managers.game_manager import GameManager
-from snake.screens.game_over import GameOver
 from snake.managers.game_state import GameState
+from snake.screens.game_over import GameOver
 from snake.screens.intro import Intro
 from snake.screens.victory import Victory
 
@@ -12,16 +13,16 @@ from snake.screens.victory import Victory
 class Game(object):
 
     def __init__(self):
-        pygame.init()
-        pygame.mixer.init()
-        pygame.font.init()
-        pygame.display.set_caption("Snake!")
+        init()
+        mixer.init()
+        font.init()
+        display.set_caption("Snake!")
         self.game_manager = GameManager()
         self.intro = Intro(self.game_manager)
         self.game_over = GameOver(self.game_manager)
         self.victory = Victory(self.game_manager)
 
-    def start(self):
+    def start(self) -> None:
         while self.game_manager.state.value >= GameState.RUNNING.value:
             self.intro.display()
             self.game_manager.start_game()
@@ -30,6 +31,6 @@ class Game(object):
         self.quit()
 
     @staticmethod
-    def quit():
-        pygame.quit()
-        sys.exit()
+    def quit() -> None:
+        quit_game()
+        quit_app()

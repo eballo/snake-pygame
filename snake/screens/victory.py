@@ -1,5 +1,6 @@
 import pygame
 
+from snake.managers.game_manager import GameManager
 from snake.managers.game_state import GameState
 from snake.screens.intro import Text
 from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, GREEN, BLACK, FPS, YELLOW
@@ -7,21 +8,33 @@ from snake.settings import SCREEN_WIDTH, SCREEN_HEIGHT, GREEN, BLACK, FPS, YELLO
 
 class Victory(Text):
 
-    def __init__(self, game_manager):
+    def __init__(self, game_manager: GameManager) -> None:
         self.game_manager = game_manager
 
     # Main Menu Screen
-    def display(self):
+    def display(self) -> None:
         if self.game_manager.state.value == GameState.GAME_VICTORY.value:
-            pygame.mixer.music.load('./snake/assets/music/victory.mp3')
+            pygame.mixer.music.load("./snake/assets/music/victory.mp3")
             pygame.mixer.music.play(-1)
             while self.game_manager.state.value == GameState.GAME_VICTORY.value:
                 self.game_manager.clock.tick(FPS)
                 self.game_manager.screen.fill(BLACK)
-                self.draw_text("Victory!!", 50, YELLOW, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3, self.game_manager.screen)
-                self.draw_text("Score : " + str(self.game_manager.player.score), 30, GREEN, SCREEN_WIDTH / 2,
-                               SCREEN_HEIGHT / 3 + 100, self.game_manager.screen)
+                self.draw_text(
+                    "Victory!!",
+                    50,
+                    YELLOW,
+                    SCREEN_WIDTH / 2,
+                    SCREEN_HEIGHT / 3,
+                    self.game_manager.screen,
+                )
+                self.draw_text(
+                    "Score : " + str(self.game_manager.player.score),
+                    30,
+                    GREEN,
+                    SCREEN_WIDTH / 2,
+                    SCREEN_HEIGHT / 3 + 100,
+                    self.game_manager.screen,
+                )
                 pygame.display.flip()
                 self.game_manager.player_commands.check_events()
             pygame.mixer.music.stop()
-

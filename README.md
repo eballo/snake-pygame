@@ -12,7 +12,6 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
 
 Snake Game crated using Pygame Library
 
@@ -70,23 +69,7 @@ python game.py
   * Update pygame to 2.60.0
   * Update to python 3.12
 
-#### TODO:
-- History
-- Multiplayer
-- configuration
-    - on / off music
-    - on / off sound effects
-    - Translations
-- Credits
-- Add levels
-  - Increase speed
-  - Add walls
-  - add objects/booms
-- Add food different value, different time
-  - apple
-- Hall of Fame
-- Boss Monster
-- Snake AI
+[Backlog - Idees](wiki/backlog.md)
 
 
 ## Acknowledgements
@@ -112,7 +95,7 @@ python game.py
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[python-shield]: https://img.shields.io/badge/python-3.7-blue.svg
+[python-shield]: https://img.shields.io/badge/python-3.12-blue.svg
 [python-url]: https://www.python.org/downloads/release/python-370/
 [contributors-shield]: https://img.shields.io/github/contributors/eballo/snake-pygame.svg?style=flat-square
 [contributors-url]: https://github.com/eballo/snake-pygame/graphs/contributors
@@ -120,7 +103,5 @@ python game.py
 [forks-url]: https://github.com/eballo/snake-pygame/network/members
 [stars-shield]: https://img.shields.io/github/stars/eballo/snake-pygame.svg?style=flat-square
 [stars-url]: https://github.com/eballo/snake-pygame/stargazers
-[issues-shield]: https://img.shields.io/github/issues/eballo/snake-pygame.svg?style=flat-square
-[issues-url]: https://github.com/eballo/snake-pygame/issues
 [product-screenshot-1]: screenshots/screenshot02.png
 [product-screenshot-2]: screenshots/screenshot03.png

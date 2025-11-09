@@ -28,3 +28,25 @@ line-length = 100
 
 [tool.black]
 line-length = 100
+
+[tool.poe.tasks.format]
+help = "Run Ruff (fix) and Black formatters"
+sequence = [
+    { cmd = "ruff check --fix ." },
+    { cmd = "black ." }
+  ]
+
+[tool.poe.tasks.check]
+help = "Validate code style and types (no writes)"
+sequence = [
+    { cmd = "ruff check ." },
+    { cmd = "black --check --diff ." },
+    { cmd = "mypy ." }
+  ]
+
+[tool.poe.tasks.validate]
+help = "Format, then run style + type checks"
+sequence = [
+    { ref = "format" },
+    { ref = "check" }
+  ]
