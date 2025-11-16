@@ -26,7 +26,8 @@ class Intro(Text):
     def display(self) -> None:
         if self.game_manager.state.value == GameState.GAME_INTRO.value:
             mixer.music.load("./snake/assets/music/insertCoin.mp3")
-            mixer.music.play(-1)
+            if self.game_manager.music_enabled:
+                mixer.music.play(-1)
             while self.game_manager.state.value == GameState.GAME_INTRO.value:
                 self.game_manager.clock.tick(FPS)
                 self.game_manager.screen.fill(BLACK)
@@ -46,6 +47,15 @@ class Intro(Text):
                     SCREEN_WIDTH / 3 + 100,
                     self.game_manager.screen,
                 )
+                self.draw_text(
+                    "Press C key to go to Configuration",
+                    15,
+                    WHITE,
+                    SCREEN_WIDTH / 2,
+                    SCREEN_WIDTH / 3 + 150,
+                    self.game_manager.screen,
+                )
                 display.flip()
                 self.game_manager.player_commands.check_events()
-            mixer.music.stop()
+            if self.game_manager.music_enabled:
+                mixer.music.stop()

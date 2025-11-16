@@ -9,3 +9,4 @@ class GameState(Enum):
     LEVEL_RUNNING = 4
     GAME_OVER = 5
     GAME_VICTORY = 6
+    GAME_CONFIG = 7
