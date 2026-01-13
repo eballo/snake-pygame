@@ -48,6 +48,9 @@ class PlayerCommands:
                         self.intro()
                     elif self.game_manager.state == GameState.GAME_VICTORY:
                         self.intro()
+                if event.key == pygame.K_c:
+                    if self.game_manager.state == GameState.GAME_INTRO:
+                        self.config()
                 if event.key == pygame.K_f:
                     if not self.game_manager.full_screen:
                         pygame.display.set_mode(
@@ -61,6 +64,9 @@ class PlayerCommands:
                             pygame.RESIZABLE | pygame.HWSURFACE | pygame.DOUBLEBUF,
                         )
                         self.game_manager.full_screen = False
+                if event.key == pygame.K_m:
+                    self.game_manager.toggle_music()
+
                 if (
                     self.game_manager.state == GameState.GAME_RUNNING
                     or self.game_manager.state == GameState.LEVEL_RUNNING
@@ -122,3 +128,6 @@ class PlayerCommands:
 
     def intro(self) -> None:
         self.game_manager.state = GameState.GAME_INTRO
+
+    def config(self) -> None:
+        self.game_manager.state = GameState.GAME_CONFIG

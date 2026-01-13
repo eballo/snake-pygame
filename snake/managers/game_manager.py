@@ -1,3 +1,4 @@
+import pygame
 from pygame import font, time, display, RESIZABLE, HWSURFACE, DOUBLEBUF, sprite, Surface, mixer
 from pygame.sprite import Group
 
@@ -17,6 +18,9 @@ from snake.settings import (
     GRID_WIDTH,
     FPS,
     BLACK,
+    GREEN,
+    YELLOW,
+    BLUE,
 )
 
 
@@ -35,6 +39,12 @@ class GameManager:
         self.food_sprites: Group = sprite.Group()
         self.state = GameState.GAME_INTRO
         self.current_level = 0
+
+        # Configuration Settings
+        self.music_enabled: bool = False
+        self.snake_color_index: int = 0
+        self.snake_colors: list[tuple[int, int, int]] = [GREEN, BLUE, WHITE, YELLOW]
+
         self.player = Snake(self)
         self.players: list[Snake] = []
         self.food: Food = Food(self)
@@ -115,7 +125,8 @@ class GameManager:
 
     def game_loop(self) -> None:
         if self.state.value == GameState.LEVEL_RUNNING.value:
-            mixer.music.play(-1)
+            if self.music_enabled:
+                mixer.music.play(-1)
             while self.state.value == GameState.LEVEL_RUNNING.value:
                 # keep the game loop running at the right speed
                 self.clock.tick(FPS)
@@ -136,7 +147,9 @@ class GameManager:
                 self.display_lives()
                 self.display_stage()
                 display.flip()
-            mixer.music.stop()
+
+            if self.music_enabled:
+                mixer.music.stop()
             self.current_level += 1
 
     def create_world(self) -> None:
@@ -149,3 +162,10 @@ class GameManager:
                 self.stage_points = level["points"]
                 self.stage_name = level["name"]
                 self.state = GameState.LEVEL_RUNNING
+
+    @staticmethod
+    def toggle_music():
+        if pygame.mixer.music.get_busy():
+            pygame.mixer.music.pause()
+        else:
+            pygame.mixer.music.unpause()

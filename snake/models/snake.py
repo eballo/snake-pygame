@@ -11,7 +11,6 @@ from snake.settings import (
     GRID_SIZE,
     BOARD_WIDTH,
     BOARD_HEIGHT,
-    SNAKE_COLOR,
     MENU_HEIGHT,
     GRID_HEIGHT,
     SCREEN_HEIGHT,
@@ -20,7 +19,7 @@ from snake.settings import (
 
 class Segment(sprite.Sprite):
 
-    def __init__(self, x, y, color=SNAKE_COLOR):
+    def __init__(self, x, y, color):
         super().__init__()
         self.image = Surface((GRID_SIZE, GRID_SIZE))
         self.image.fill(color)
@@ -31,14 +30,21 @@ class Segment(sprite.Sprite):
 
 class Snake:
 
-    def __init__(self, game_manager, color=SNAKE_COLOR):
+    def __init__(self, game_manager, player_number: int | None = None) -> None:
         self.game_manager = game_manager
-        self.color = color
+        self.snake_color_index: int = 0
+        self.player_number = player_number
+        self.color = self._get_color(player_number)
         self.length = 3
         self.score = 0
         self.lives = 1
-        self.positions = [Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2), color)]
+        self.positions = [Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2), self.color)]
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
+
+    def _get_color(self, player_number: int | None = None) -> tuple[int, int, int]:
+        if player_number:
+            return self.game_manager.snake_colors[player_number - 1]
+        return self.game_manager.snake_colors[self.game_manager.snake_color_index]
 
     def get_head_position(self):
         return self.positions[0]
@@ -52,7 +58,7 @@ class Snake:
             new_y = MENU_HEIGHT * GRID_HEIGHT
         if new_y < (MENU_HEIGHT - 1) * GRID_HEIGHT:
             new_y = SCREEN_HEIGHT
-        new_segment = Segment(new_x, new_y)
+        new_segment = Segment(new_x, new_y, self.color)
         # check new segment collision with the body
         sub_group = sprite.Group()
         for seg in self.positions[2:]:
@@ -79,37 +85,40 @@ class Snake:
         self.length = 3
         self.lives = 1
         self.score = 0
-        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))
+        self.color = self._get_color()
+        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2), self.color)
         self.positions = [segment]
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         self.game_manager.snake_sprites.add(segment)
 
     def soft_reset(self):
-        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2))
+        segment = Segment((BOARD_WIDTH // 2), (BOARD_HEIGHT // 2), self.color)
+        self.color = self._get_color()
         self.positions = [segment]
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         self.game_manager.snake_sprites.add(segment)
 
-    def get_json(self):
+    def get_json(self, number: int) -> str:
         segments = []
         for pos in self.positions:
             segments.append((pos.rect.x, pos.rect.y))
         data = {
             "direction": self.direction,
             "positions": segments,
+            "player": number,
             "color": self.color,
             "length": self.length,
             "lives": self.lives,
         }
         return dumps(data)
 
-    def update_from_json(self, json_response):
-        snake = Snake(self.game_manager)
+    @staticmethod
+    def update_from_json(game_manager, json_response):
+        snake = Snake(game_manager, json_response["player"] + 1)
         segments = []
         for pos in json_response["positions"]:
-            segments.append(Segment(pos[0], pos[1], json_response["color"]))
+            segments.append(Segment(pos[0], pos[1], snake.color))
 
-        snake.color = json_response["color"]
         snake.direction = json_response["direction"]
         snake.positions = segments
         snake.length = json_response["length"]
@@ -124,3 +133,4 @@ class Snake:
         print(f"score: {self.score}")
         print(f"lives: {self.lives}")
         print(f"color: {self.color}")
+        print(f"plyer: {self.player_number}")

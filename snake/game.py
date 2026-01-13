@@ -5,6 +5,7 @@ from pygame import quit as quit_game
 
 from snake.managers.game_manager import GameManager
 from snake.managers.game_state import GameState
+from snake.screens.config import Config
 from snake.screens.game_over import GameOver
 from snake.screens.intro import Intro
 from snake.screens.victory import Victory
@@ -21,10 +22,12 @@ class Game(object):
         self.intro = Intro(self.game_manager)
         self.game_over = GameOver(self.game_manager)
         self.victory = Victory(self.game_manager)
+        self.config = Config(self.game_manager)
 
     def start(self) -> None:
         while self.game_manager.state.value >= GameState.RUNNING.value:
             self.intro.display()
+            self.config.display()
             self.game_manager.start_game()
             self.victory.display()
             self.game_over.display()

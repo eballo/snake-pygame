@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from snake.settings import GREEN, BLUE
 
 if TYPE_CHECKING:
     from .ServerClientHandler import ServerClientHandler
@@ -13,14 +14,16 @@ class ServerManager:
             {
                 "direction": "UP",
                 "positions": [[120, 280], [140, 280], [160, 280]],
-                "color": [0, 255, 0],
+                "color": GREEN,
+                "player": 1,
                 "length": 3,
                 "lives": 1,
             },
             {
                 "direction": "DOWN",
                 "positions": [[400, 340], [400, 320], [400, 300]],
-                "color": [255, 0, 0],
+                "color": BLUE,
+                "player": 2,
                 "length": 3,
                 "lives": 1,
             },

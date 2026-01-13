@@ -30,7 +30,7 @@ class ClientServerHandler(socket, Thread):
 
         while True:
             self.receive_other_players_updates_json()
-            self.send_client_update(self.game_manager.player.get_json())
+            self.send_client_update(self.game_manager.player.get_json(self.player_number))
 
     def __del__(self) -> None:
         self.close()
@@ -62,7 +62,8 @@ class ClientServerHandler(socket, Thread):
 
         self.game_manager.other_players_sprites.empty()
         for player in other_players_json:
-            snake = self.game_manager.player.update_from_json(player)
+            snake = self.game_manager.player.update_from_json(self.game_manager, player)
+            snake.debug_info()
             self.game_manager.players.append(snake)
             for seg in snake.positions:
                 self.game_manager.other_players_sprites.add(seg)
